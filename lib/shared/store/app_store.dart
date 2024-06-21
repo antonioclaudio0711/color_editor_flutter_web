@@ -133,6 +133,8 @@ class AppStore {
     if (codeStatusResponse == 200) {
       setExportFeedbackDescription(
           newExportFeedBackDescription: 'Exportation success!');
+
+      resetToInitialSettings();
     } else {
       setExportFeedbackDescription(
           newExportFeedBackDescription: 'Exportation failed!');
@@ -144,7 +146,5 @@ class AppStore {
       const Duration(seconds: 3),
       () => setIsVisible(newVisibility: false),
     );
-
-    resetToInitialSettings();
   }
 }

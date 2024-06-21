@@ -110,20 +110,11 @@ class _HomePageState extends State<HomePage> {
                                     builder: (context, file, widget) =>
                                         GestureDetector(
                                       onTap: () => appStore.imagePicker(),
-                                      child: Container(
+                                      child: SizedBox(
                                         width:
                                             MediaQuery.of(context).size.width /
-                                                10,
-                                        height:
-                                            MediaQuery.of(context).size.height /
-                                                10,
-                                        decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                            image: NetworkImage(
-                                              file.path,
-                                            ),
-                                          ),
-                                        ),
+                                                8,
+                                        child: Image.network(file.path),
                                       ),
                                     ),
                                   ),
