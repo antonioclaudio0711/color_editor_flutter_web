@@ -8,8 +8,8 @@ class AppColors {
   final Color exportButtonBackgroundColor =
       const Color.fromARGB(255, 151, 141, 141);
   final Color whiteForegroundColor = Colors.white;
-  final Color successInformationsExportColor =
+  final Color successInformationExportColor =
       const Color.fromARGB(255, 47, 231, 139);
-  final Color errorInformationsExportColor =
+  final Color errorInformationExportColor =
       const Color.fromARGB(255, 235, 102, 102);
 }

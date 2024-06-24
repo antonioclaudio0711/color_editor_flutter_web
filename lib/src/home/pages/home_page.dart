@@ -1,23 +1,22 @@
 import 'package:color_editor_flutter/shared/app_colors.dart';
+import 'package:color_editor_flutter/shared/models/color_model.dart';
 import 'package:color_editor_flutter/shared/store/app_store.dart';
-import 'package:color_editor_flutter/shared/models/page_informations_model.dart';
+import 'package:color_editor_flutter/shared/models/page_information_model.dart';
 import 'package:color_editor_flutter/src/home/widgets/custom_device_button.dart';
 import 'package:color_editor_flutter/src/home/widgets/feedback_container.dart';
 import 'package:color_editor_flutter/src/home/widgets/general_button.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({super.key});
-
-  final AppStore _appStore = AppStore();
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  AppStore get appStore => widget._appStore;
-  final AppColors appColors = AppColors();
+  final AppStore _appStore = AppStore();
+  final AppColors _appColors = AppColors();
 
   @override
   Widget build(BuildContext context) {
@@ -33,18 +32,18 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ValueListenableBuilder(
-              valueListenable: appStore.primaryColor,
+              valueListenable: _appStore.primaryColor,
               builder: (context, primaryColor, widget) {
                 return GestureDetector(
                   onTap: () {
                     showDialog(
                       barrierDismissible: false,
                       context: context,
-                      builder: (context) => appStore.colorPicker(
+                      builder: (context) => _appStore.colorPicker(
                         context: context,
                         currentColor: primaryColor,
                         colorFunction: (color) =>
-                            appStore.setPrimaryColor(newPrimaryColor: color),
+                            _appStore.setPrimaryColor(newPrimaryColor: color),
                       ),
                     );
                   },
@@ -57,17 +56,17 @@ class _HomePageState extends State<HomePage> {
                       borderRadius: BorderRadius.circular(50),
                     ),
                     child: ValueListenableBuilder(
-                      valueListenable: appStore.secondaryColor,
+                      valueListenable: _appStore.secondaryColor,
                       builder: (context, secondaryColor, widget) =>
                           GestureDetector(
                         onTap: () {
                           showDialog(
                             barrierDismissible: false,
                             context: context,
-                            builder: (context) => appStore.colorPicker(
+                            builder: (context) => _appStore.colorPicker(
                               context: context,
                               currentColor: secondaryColor,
-                              colorFunction: (color) => appStore
+                              colorFunction: (color) => _appStore
                                   .setSecondaryColor(newSecondaryColor: color),
                             ),
                           );
@@ -86,7 +85,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           child: ValueListenableBuilder(
-                            valueListenable: appStore.currentTemplate,
+                            valueListenable: _appStore.currentTemplate,
                             builder: (context, templateNumber, widget) =>
                                 Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -106,10 +105,10 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 if (templateNumber == 2)
                                   ValueListenableBuilder(
-                                    valueListenable: appStore.imageFile,
+                                    valueListenable: _appStore.imageFile,
                                     builder: (context, file, widget) =>
                                         GestureDetector(
-                                      onTap: () => appStore.imagePicker(),
+                                      onTap: () => _appStore.imagePicker(),
                                       child: SizedBox(
                                         width:
                                             MediaQuery.of(context).size.width /
@@ -120,17 +119,17 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 const SizedBox(height: 20),
                                 CustomDeviceButton(
-                                  appStore: appStore,
+                                  appStore: _appStore,
                                   buttonDescription: 'Activate Kiosk',
                                   buttonIcon: Icons.person_add,
                                 ),
                                 CustomDeviceButton(
-                                  appStore: appStore,
+                                  appStore: _appStore,
                                   buttonDescription: 'Activate Session Scanner',
                                   buttonIcon: Icons.qr_code_scanner,
                                 ),
                                 CustomDeviceButton(
-                                  appStore: appStore,
+                                  appStore: _appStore,
                                   buttonDescription: 'Activate Leads',
                                   buttonIcon: Icons.people_alt,
                                 ),
@@ -159,7 +158,7 @@ class _HomePageState extends State<HomePage> {
                   GeneralButton(
                     buttonIcon: Icons.restore,
                     buttonDescription: 'Restore to initial settings',
-                    onPressedFunction: () => appStore.resetToInitialSettings(),
+                    onPressedFunction: () => _appStore.resetToInitialSettings(),
                   ),
                   const SizedBox(height: 30),
                   const Text('Choose one of these templates:'),
@@ -170,7 +169,7 @@ class _HomePageState extends State<HomePage> {
                     buttonDescription:
                         'Template 1 - Text, backgroundColor and input',
                     onPressedFunction: () =>
-                        appStore.setTemplate(newTemplate: 1),
+                        _appStore.setTemplate(newTemplate: 1),
                   ),
                   const SizedBox(height: 10),
                   GeneralButton(
@@ -179,31 +178,46 @@ class _HomePageState extends State<HomePage> {
                     buttonDescription:
                         'Template 2 - Image, backgroundColor and input',
                     onPressedFunction: () =>
-                        appStore.setTemplate(newTemplate: 2),
+                        _appStore.setTemplate(newTemplate: 2),
                   ),
                   const Spacer(),
                   ValueListenableBuilder(
-                    valueListenable: appStore.isVisible,
+                    valueListenable: _appStore.isVisible,
                     builder: (context, visibility, child) => visibility
-                        ? FeedbackContainer(appStore: appStore)
+                        ? FeedbackContainer(appStore: _appStore)
                         : Container(),
                   ),
                   GeneralButton(
                     buttonWidth: double.maxFinite,
                     buttonIcon: Icons.import_export,
-                    buttonDescription: 'Export informations',
+                    buttonDescription: 'Export information',
                     onPressedFunction: () async =>
-                        await appStore.postPageInformations(
-                      pageInformations: PageInformationsModel(
-                        templateNumber: appStore.currentTemplate.value,
-                        primaryColor: appStore.primaryColor.value,
-                        secondaryColor: appStore.secondaryColor.value,
-                        tertiaryColor: appStore.tertiaryColor.value,
-                        imageFilePath: appStore.imageFile.value.path,
+                        await _appStore.postPageInformation(
+                      pageInformation: PageInformationModel(
+                        templateNumber: _appStore.currentTemplate.value,
+                        primaryColor: ColorModel(
+                          redIndex: _appStore.primaryColor.value.red,
+                          blueIndex: _appStore.primaryColor.value.blue,
+                          greenIndex: _appStore.primaryColor.value.green,
+                          alphaIndex: _appStore.primaryColor.value.alpha,
+                        ),
+                        secondaryColor: ColorModel(
+                          redIndex: _appStore.secondaryColor.value.red,
+                          blueIndex: _appStore.secondaryColor.value.blue,
+                          greenIndex: _appStore.secondaryColor.value.green,
+                          alphaIndex: _appStore.secondaryColor.value.alpha,
+                        ),
+                        tertiaryColor: ColorModel(
+                          redIndex: _appStore.tertiaryColor.value.red,
+                          blueIndex: _appStore.tertiaryColor.value.blue,
+                          greenIndex: _appStore.tertiaryColor.value.green,
+                          alphaIndex: _appStore.tertiaryColor.value.alpha,
+                        ),
+                        imageFilePath: _appStore.imageFile.value.path,
                       ),
                     ),
-                    buttonColor: appColors.exportButtonBackgroundColor,
-                    buttonForegroundColor: appColors.whiteForegroundColor,
+                    buttonColor: _appColors.exportButtonBackgroundColor,
+                    buttonForegroundColor: _appColors.whiteForegroundColor,
                   ),
                 ],
               ),

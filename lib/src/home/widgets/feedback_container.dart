@@ -17,8 +17,8 @@ class FeedbackContainer extends StatelessWidget {
       decoration: BoxDecoration(
         color:
             appStore.exportFeedBackDescription.value == 'Exportation success!'
-                ? appColors.successInformationsExportColor
-                : appColors.errorInformationsExportColor,
+                ? appColors.successInformationExportColor
+                : appColors.errorInformationExportColor,
         borderRadius: BorderRadius.circular(30),
       ),
       width: double.maxFinite,

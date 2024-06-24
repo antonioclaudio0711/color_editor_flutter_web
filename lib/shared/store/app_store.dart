@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:color_editor_flutter/shared/app_colors.dart';
+import 'package:color_editor_flutter/shared/models/page_information_model.dart';
 import 'package:color_editor_flutter/shared/services/app_service.dart';
-import 'package:color_editor_flutter/shared/models/page_informations_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:image_picker/image_picker.dart';
@@ -123,19 +123,19 @@ class AppStore {
     }
   }
 
-  Future<void> postPageInformations({
-    required PageInformationsModel pageInformations,
+  Future<void> postPageInformation({
+    required PageInformationModel pageInformation,
   }) async {
-    final codeStatusResponse = await _appService.postPageInformations(
-      pageInformations: pageInformations,
-    );
+    try {
+      await _appService.postPageInformation(
+        pageInformation: pageInformation,
+      );
 
-    if (codeStatusResponse == 200) {
       setExportFeedbackDescription(
           newExportFeedBackDescription: 'Exportation success!');
 
       resetToInitialSettings();
-    } else {
+    } catch (e) {
       setExportFeedbackDescription(
           newExportFeedBackDescription: 'Exportation failed!');
     }
