@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:color_editor_flutter/shared/app_colors.dart';
 import 'package:color_editor_flutter/shared/models/color_model.dart';
 import 'package:color_editor_flutter/shared/store/app_store.dart';
@@ -105,15 +107,23 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 if (templateNumber == 2)
                                   ValueListenableBuilder(
-                                    valueListenable: _appStore.imageFile,
-                                    builder: (context, file, widget) =>
+                                    valueListenable: _appStore.image64String,
+                                    builder: (context, image, widget) =>
                                         GestureDetector(
-                                      onTap: () => _appStore.imagePicker(),
+                                      onTap: () =>
+                                          _appStore.pickAndConvertImage(),
                                       child: SizedBox(
                                         width:
                                             MediaQuery.of(context).size.width /
                                                 8,
-                                        child: Image.network(file.path),
+                                        child: image ==
+                                                'assets/images/show_up_logo.png'
+                                            ? Image.asset(
+                                                image,
+                                              )
+                                            : Image.memory(
+                                                base64Decode(image),
+                                              ),
                                       ),
                                     ),
                                   ),
@@ -213,7 +223,7 @@ class _HomePageState extends State<HomePage> {
                           greenIndex: _appStore.tertiaryColor.value.green,
                           alphaIndex: _appStore.tertiaryColor.value.alpha,
                         ),
-                        imageFilePath: _appStore.imageFile.value.path,
+                        imageFilePath: _appStore.image64String.value,
                       ),
                     ),
                     buttonColor: _appColors.exportButtonBackgroundColor,

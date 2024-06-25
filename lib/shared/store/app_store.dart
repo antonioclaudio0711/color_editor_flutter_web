@@ -1,12 +1,11 @@
 import 'dart:async';
-import 'dart:io';
+import 'dart:html' as html;
 
 import 'package:color_editor_flutter/shared/app_colors.dart';
 import 'package:color_editor_flutter/shared/models/page_information_model.dart';
 import 'package:color_editor_flutter/shared/services/app_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:image_picker/image_picker.dart';
 
 class AppStore {
   AppStore();
@@ -19,21 +18,19 @@ class AppStore {
       ValueNotifier(AppColors().initialSecondaryColor);
   ValueNotifier<Color> tertiaryColor =
       ValueNotifier(AppColors().initialTertiaryColor);
-  ValueNotifier<File> imageFile = ValueNotifier(
-    File('assets/images/show_up_logo.png'),
-  );
+  ValueNotifier<String> image64String =
+      ValueNotifier('assets/images/show_up_logo.png');
+
   ValueNotifier<int> currentTemplate = ValueNotifier(1);
   ValueNotifier<bool> isVisible = ValueNotifier(false);
   ValueNotifier<String?> exportFeedBackDescription = ValueNotifier(null);
-
-  final ImagePicker _picker = ImagePicker();
 
   void resetToInitialSettings() {
     setTemplate(newTemplate: 1);
     setPrimaryColor(newPrimaryColor: AppColors().initialPrimaryColor);
     setSecondaryColor(newSecondaryColor: AppColors().initialSecondaryColor);
     setTertiaryColor(newTertiaryColor: AppColors().initialTertiaryColor);
-    setImageFile(newImageFile: File('assets/images/show_up_logo.png'));
+    setImageFile(newImageFile: 'assets/images/show_up_logo.png');
   }
 
   void setPrimaryColor({required Color newPrimaryColor}) {
@@ -82,20 +79,29 @@ class AppStore {
     );
   }
 
-  void setImageFile({required File newImageFile}) {
-    if (newImageFile == imageFile.value) {
+  void setImageFile({required String newImageFile}) {
+    if (image64String.value == newImageFile) {
       return;
     } else {
-      imageFile.value = newImageFile;
+      image64String.value = newImageFile;
     }
   }
 
-  Future<void> imagePicker() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+  void pickAndConvertImage() async {
+    html.FileUploadInputElement uploadInput = html.FileUploadInputElement();
+    uploadInput.accept = 'image/*'; // Aceita somente imagens
+    uploadInput.click();
 
-    if (pickedFile != null) {
-      setImageFile(newImageFile: File(pickedFile.path));
-    }
+    uploadInput.onChange.listen((event) {
+      final files = uploadInput.files;
+      if (files!.isEmpty) return;
+
+      final reader = html.FileReader();
+      reader.readAsDataUrl(files[0]);
+      reader.onLoadEnd.listen((e) {
+        setImageFile(newImageFile: reader.result.toString().split(',')[1]);
+      });
+    });
   }
 
   void setTemplate({required int newTemplate}) {
