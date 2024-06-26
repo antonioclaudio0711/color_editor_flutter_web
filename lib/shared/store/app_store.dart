@@ -61,9 +61,10 @@ class AppStore {
     required BuildContext context,
     required Color currentColor,
     required void Function(Color) colorFunction,
+    required String textDescriptionColor,
   }) {
     return AlertDialog(
-      title: const Text('Pick a color!'),
+      title: Text(textDescriptionColor),
       content: SingleChildScrollView(
         child: ColorPicker(
           pickerColor: currentColor,

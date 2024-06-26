@@ -41,6 +41,7 @@ class CustomDeviceButton extends StatelessWidget {
                 builder: (context) => appStore.colorPicker(
                   context: context,
                   currentColor: tertiaryColor,
+                  textDescriptionColor: 'Select the Tertiary color!',
                   colorFunction: (color) =>
                       appStore.setTertiaryColor(newTertiaryColor: color),
                 ),

@@ -4,6 +4,7 @@ import 'package:color_editor_flutter/shared/app_colors.dart';
 import 'package:color_editor_flutter/shared/models/color_model.dart';
 import 'package:color_editor_flutter/shared/store/app_store.dart';
 import 'package:color_editor_flutter/shared/models/page_information_model.dart';
+import 'package:color_editor_flutter/src/home/widgets/color_representation_widget.dart';
 import 'package:color_editor_flutter/src/home/widgets/custom_device_button.dart';
 import 'package:color_editor_flutter/src/home/widgets/feedback_container.dart';
 import 'package:color_editor_flutter/src/home/widgets/general_button.dart';
@@ -44,6 +45,7 @@ class _HomePageState extends State<HomePage> {
                       builder: (context) => _appStore.colorPicker(
                         context: context,
                         currentColor: primaryColor,
+                        textDescriptionColor: 'Select the Primary color!',
                         colorFunction: (color) =>
                             _appStore.setPrimaryColor(newPrimaryColor: color),
                       ),
@@ -68,6 +70,8 @@ class _HomePageState extends State<HomePage> {
                             builder: (context) => _appStore.colorPicker(
                               context: context,
                               currentColor: secondaryColor,
+                              textDescriptionColor:
+                                  'Select the Secondary color!',
                               colorFunction: (color) => _appStore
                                   .setSecondaryColor(newSecondaryColor: color),
                             ),
@@ -170,9 +174,10 @@ class _HomePageState extends State<HomePage> {
                     buttonDescription: 'Restore to initial settings',
                     onPressedFunction: () => _appStore.resetToInitialSettings(),
                   ),
-                  const SizedBox(height: 30),
-                  const Text('Choose one of these templates:'),
-                  const SizedBox(height: 5),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 30, bottom: 5),
+                    child: Text('Choose one of these templates:'),
+                  ),
                   GeneralButton(
                     buttonWidth: double.maxFinite,
                     buttonIcon: Icons.fit_screen,
@@ -181,7 +186,6 @@ class _HomePageState extends State<HomePage> {
                     onPressedFunction: () =>
                         _appStore.setTemplate(newTemplate: 1),
                   ),
-                  const SizedBox(height: 10),
                   GeneralButton(
                     buttonWidth: double.maxFinite,
                     buttonIcon: Icons.fit_screen,
@@ -189,6 +193,25 @@ class _HomePageState extends State<HomePage> {
                         'Template 2 - Image, backgroundColor and input',
                     onPressedFunction: () =>
                         _appStore.setTemplate(newTemplate: 2),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 30, bottom: 5),
+                    child: Text('Selected colors:'),
+                  ),
+                  ColorRepresentationWidget(
+                    valueListenable: _appStore.primaryColor,
+                    appStore: _appStore,
+                    textDescriptionRow: 'Primary color',
+                  ),
+                  ColorRepresentationWidget(
+                    valueListenable: _appStore.secondaryColor,
+                    appStore: _appStore,
+                    textDescriptionRow: 'Secondary color',
+                  ),
+                  ColorRepresentationWidget(
+                    valueListenable: _appStore.tertiaryColor,
+                    appStore: _appStore,
+                    textDescriptionRow: 'Tertiary color',
                   ),
                   const Spacer(),
                   ValueListenableBuilder(

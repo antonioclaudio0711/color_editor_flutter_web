@@ -20,19 +20,22 @@ class GeneralButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: buttonWidth,
-      child: ElevatedButton.icon(
-        icon: FittedBox(child: Icon(buttonIcon)),
-        label: FittedBox(
-          child: Text(buttonDescription),
-        ),
-        onPressed: onPressedFunction,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: buttonColor,
-          foregroundColor: buttonForegroundColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(5),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: SizedBox(
+        width: buttonWidth,
+        child: ElevatedButton.icon(
+          icon: FittedBox(child: Icon(buttonIcon)),
+          label: FittedBox(
+            child: Text(buttonDescription),
+          ),
+          onPressed: onPressedFunction,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: buttonColor,
+            foregroundColor: buttonForegroundColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5),
+            ),
           ),
         ),
       ),
