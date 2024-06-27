@@ -7,6 +7,7 @@ import 'package:color_editor_flutter/shared/models/page_information_model.dart';
 import 'package:color_editor_flutter/src/home/widgets/color_representation_widget.dart';
 import 'package:color_editor_flutter/src/home/widgets/custom_device_button.dart';
 import 'package:color_editor_flutter/src/home/widgets/feedback_container.dart';
+import 'package:color_editor_flutter/src/home/widgets/font_representation_widget.dart';
 import 'package:color_editor_flutter/src/home/widgets/general_button.dart';
 import 'package:flutter/material.dart';
 
@@ -97,16 +98,24 @@ class _HomePageState extends State<HomePage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 if (templateNumber == 1)
-                                  //TODO: Fazer a customização da fonte (cor e tipo da fonte)
                                   GestureDetector(
-                                    onTap: () => print('Text'),
-                                    child: FittedBox(
-                                      child: Text(
-                                        'ShowUp',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .displayLarge,
-                                      ),
+                                    onTap: () => showDialog(
+                                      context: context,
+                                      builder: (context) =>
+                                          _appStore.fontPicker(),
+                                    ),
+                                    child: ValueListenableBuilder(
+                                      valueListenable: _appStore.fontTextStyle,
+                                      builder: (context, textStyle, widget) {
+                                        return FittedBox(
+                                          child: Text(
+                                            'ShowUp',
+                                            style: textStyle.copyWith(
+                                              fontSize: 50,
+                                            ),
+                                          ),
+                                        );
+                                      },
                                     ),
                                   ),
                                 if (templateNumber == 2)
@@ -213,6 +222,7 @@ class _HomePageState extends State<HomePage> {
                     appStore: _appStore,
                     textDescriptionRow: 'Tertiary color',
                   ),
+                  FontRepresentationWidget(appStore: _appStore),
                   const Spacer(),
                   ValueListenableBuilder(
                     valueListenable: _appStore.isVisible,

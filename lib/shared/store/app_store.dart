@@ -2,15 +2,18 @@ import 'dart:async';
 import 'dart:html' as html;
 
 import 'package:color_editor_flutter/shared/app_colors.dart';
+import 'package:color_editor_flutter/shared/app_fonts.dart';
 import 'package:color_editor_flutter/shared/models/page_information_model.dart';
 import 'package:color_editor_flutter/shared/services/app_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:flutter_font_picker/flutter_font_picker.dart';
 
 class AppStore {
   AppStore();
 
   final AppService _appService = AppService();
+  final AppFonts _appFonts = AppFonts();
 
   ValueNotifier<Color> primaryColor =
       ValueNotifier(AppColors().initialPrimaryColor);
@@ -20,6 +23,9 @@ class AppStore {
       ValueNotifier(AppColors().initialTertiaryColor);
   ValueNotifier<String> image64String =
       ValueNotifier('assets/images/show_up_logo.png');
+  ValueNotifier<TextStyle> fontTextStyle = ValueNotifier(
+    const TextStyle(fontSize: 50, fontFamily: 'Roboto_regular'),
+  );
 
   ValueNotifier<int> currentTemplate = ValueNotifier(1);
   ValueNotifier<bool> isVisible = ValueNotifier(false);
@@ -31,6 +37,10 @@ class AppStore {
     setSecondaryColor(newSecondaryColor: AppColors().initialSecondaryColor);
     setTertiaryColor(newTertiaryColor: AppColors().initialTertiaryColor);
     setImageFile(newImageFile: 'assets/images/show_up_logo.png');
+    setFontTextStyle(
+      newFontTextStyle:
+          const TextStyle(fontSize: 50, fontFamily: 'Roboto_regular'),
+    );
   }
 
   void setPrimaryColor({required Color newPrimaryColor}) {
@@ -77,6 +87,33 @@ class AppStore {
           child: const Text('Got it!'),
         )
       ],
+    );
+  }
+
+  void setFontTextStyle({required TextStyle newFontTextStyle}) {
+    if (fontTextStyle.value == newFontTextStyle) {
+      return;
+    } else {
+      fontTextStyle.value = newFontTextStyle;
+    }
+  }
+
+  Widget fontPicker() {
+    return AlertDialog(
+      content: SingleChildScrollView(
+        child: SizedBox(
+          width: double.maxFinite,
+          child: FontPicker(
+            showFontInfo: false,
+            showFontVariants: false,
+            showInDialog: true,
+            onFontChanged: (font) => setFontTextStyle(
+              newFontTextStyle: font.toTextStyle(),
+            ),
+            googleFonts: _appFonts.googleFonts,
+          ),
+        ),
+      ),
     );
   }
 
