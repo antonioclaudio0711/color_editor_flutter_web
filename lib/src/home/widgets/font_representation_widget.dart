@@ -35,7 +35,7 @@ class FontRepresentationWidget extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(35),
                                 ),
                                 child: Text(
-                                  textStyle.fontFamily!,
+                                  textStyle.fontFamilyFallback![0],
                                   style: textStyle.copyWith(
                                     fontSize: 15,
                                   ),

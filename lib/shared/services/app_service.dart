@@ -36,7 +36,8 @@ class AppService {
             'blue': pageInformation.tertiaryColor.blueIndex,
             'alpha': pageInformation.tertiaryColor.alphaIndex,
           },
-          'imageFilePath': pageInformation.imageFilePath
+          'fontStyleFamilyString': pageInformation.fontStyleFamilyString,
+          'imageFilePath': pageInformation.imageFilePath,
         },
       ),
     );

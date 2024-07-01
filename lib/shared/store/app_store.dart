@@ -8,6 +8,7 @@ import 'package:color_editor_flutter/shared/services/app_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_font_picker/flutter_font_picker.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppStore {
   AppStore();
@@ -24,7 +25,10 @@ class AppStore {
   ValueNotifier<String> image64String =
       ValueNotifier('assets/images/show_up_logo.png');
   ValueNotifier<TextStyle> fontTextStyle = ValueNotifier(
-    const TextStyle(fontSize: 50, fontFamily: 'Roboto_regular'),
+    GoogleFonts.getFont(
+      'Roboto',
+      textStyle: const TextStyle(fontSize: 50),
+    ),
   );
 
   ValueNotifier<int> currentTemplate = ValueNotifier(1);
@@ -38,8 +42,10 @@ class AppStore {
     setTertiaryColor(newTertiaryColor: AppColors().initialTertiaryColor);
     setImageFile(newImageFile: 'assets/images/show_up_logo.png');
     setFontTextStyle(
-      newFontTextStyle:
-          const TextStyle(fontSize: 50, fontFamily: 'Roboto_regular'),
+      newFontTextStyle: GoogleFonts.getFont(
+        'Roboto',
+        textStyle: const TextStyle(fontSize: 50),
+      ),
     );
   }
 

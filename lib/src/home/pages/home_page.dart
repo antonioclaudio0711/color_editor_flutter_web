@@ -256,6 +256,8 @@ class _HomePageState extends State<HomePage> {
                           greenIndex: _appStore.tertiaryColor.value.green,
                           alphaIndex: _appStore.tertiaryColor.value.alpha,
                         ),
+                        fontStyleFamilyString: _appStore
+                            .fontTextStyle.value.fontFamilyFallback![0],
                         imageFilePath: _appStore.image64String.value,
                       ),
                     ),

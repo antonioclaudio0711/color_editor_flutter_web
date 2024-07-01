@@ -41,7 +41,6 @@ class AppFonts {
     "Raleway",
     "Roboto",
     "Roboto Mono",
-    "Source Sans Pro",
     "Space Mono",
     "Spicy Rice",
     "Squada One",

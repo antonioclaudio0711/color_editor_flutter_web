@@ -9,6 +9,7 @@ class PageInformationModel {
     required this.secondaryColor,
     required this.tertiaryColor,
     required this.imageFilePath,
+    required this.fontStyleFamilyString,
   });
 
   final int templateNumber;
@@ -16,6 +17,7 @@ class PageInformationModel {
   final ColorModel secondaryColor;
   final ColorModel tertiaryColor;
   final String imageFilePath;
+  final String fontStyleFamilyString;
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -38,6 +40,7 @@ class PageInformationModel {
         'blue': tertiaryColor.blueIndex,
         'alpha': tertiaryColor.alphaIndex,
       },
+      'fontStyleFamilyString': fontStyleFamilyString,
       'imageFilePath': imageFilePath,
     };
   }
@@ -63,6 +66,7 @@ class PageInformationModel {
         blueIndex: map['tertiaryColor']['blue'],
         alphaIndex: map['tertiaryColor']['alpha'],
       ),
+      fontStyleFamilyString: map['fontStyleFamilyString'] as String,
       imageFilePath: map['imageFilePath'] as String,
     );
   }
